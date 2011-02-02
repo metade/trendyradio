@@ -1,4 +1,4 @@
 gem 'sinatra'
 gem 'hpricot'
-gem 'json
-gem 'active_support'
+gem 'json'
+gem 'activesupport'
