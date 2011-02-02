@@ -3,13 +3,42 @@ require 'sinatra'
 require 'hpricot'
 require 'open-uri'
 require 'json'
-require 'active_support/cache'
+require 'erb'
 
-$cache = ActiveSupport::Cache::MemoryStore.new
+require 'active_support/cache'
+require 'active_support/cache/dalli_store23'
+
+configure do
+  CACHE = ActiveSupport::Cache::MemoryStore.new
+end
+
+# FRONT END STUFF
+
+get '/' do
+  erb :index
+end
+
+get '/locations/:woeid/trends.json' do |woeid|
+  content_type 'application/json'
+  response.headers['Cache-Control'] = 'public, max-age=60'
+  
+  data = trends(woeid)
+  data['trends'].map do |trend|
+    description = trend['description']['text'] if trend['description']
+    { :title => trend['name'],
+      :description => description,
+      :first_trended_at => trend['first_trended_at'],
+      :last_trended_at => trend['last_trended_at'],
+      :content => find_content(trend['name'])
+    }
+  end.to_json
+end
+
+# BACK END STUFF
 
 def trends(woeid = 23424975)
   url = "http://api.whatthetrend.com/api/v2/trends.json?woeid=#{woeid}"
-  $cache.fetch(url, :expires_in => 1.minutes) do
+  CACHE.fetch(url, :expires_in => 1.minutes) do
     puts "FETCHING #{url}"
     JSON.parse(open(url).read)
   end
@@ -43,28 +72,12 @@ end
 
 def find_content(query)
   content = {}
-  $cache.fetch(query, :expires_in => 1.hour) do
+  CACHE.fetch(query, :expires_in => 1.hour) do
     query_string = URI.escape(%["#{query}"])
     scrape_search(%[http://www.bbc.co.uk/search/?q=#{query_string}], content)
     scrape_search(%[http://www.bbc.co.uk/search/iplayer/?q=#{query_string}], content)
-    scrape_search(%[http://www.bbc.co.uk/search/schedule/?q=#{query_string}], content)
+    # scrape_search(%[http://www.bbc.co.uk/search/schedule/?q=#{query_string}], content)
     content.each { |k,v| v.uniq! }
     content
   end
-end
-
-get '/locations/:woeid/trends.json' do |woeid|
-  content_type 'application/json'
-  response.headers['Cache-Control'] = 'public, max-age=60'
-  
-  data = trends(woeid)
-  data['trends'].map do |trend|
-    description = trend['description']['text'] if trend['description']
-    { :title => trend['name'],
-      :description => description,
-      :first_trended_at => trend['first_trended_at'],
-      :last_trended_at => trend['last_trended_at'],
-      :content => find_content(trend['name'])
-    }
-  end.to_json
 end
