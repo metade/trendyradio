@@ -1,7 +1,9 @@
 GEM
+  remote: http://rubygems.org/
   specs:
     activesupport (3.0.3)
     hpricot (0.6.164)
+    i18n (0.5.0)
     json (1.4.6)
     rack (1.2.1)
     sinatra (1.0)
@@ -13,5 +15,6 @@ PLATFORMS
 DEPENDENCIES
   activesupport
   hpricot
+  i18n
   json
   sinatra
