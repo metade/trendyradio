@@ -11,7 +11,7 @@ nile.renderTrends = function(results) {
 		for (var i = 0; i < results.length; i++) {
 			template = '';
 			if (results[i].content.news && results[i].content.news.length) {
-				template += '<h2>' + results[i].title + '</h2>';
+				template += '<h2><a href="http://search.twitter.com/search?q='+escape(results[i].title)+'">' + results[i].title + '</a></h2>';
 				template += '<p>' + results[i].description + '</p>';
 				template += '<ol id="trend'+ i +'">';
 				
@@ -38,7 +38,6 @@ nile.renderTrends = function(results) {
 				glow.dom.create(template).appendTo('#trends');
 				var carousel = new glow.widgets.Carousel("#trend" + i,{
 					step: 3
-				       
 				});
 			}
 		}
@@ -48,13 +47,15 @@ nile.renderTrends = function(results) {
 
 nile.loadTrends = function(){
 
-	glow.net.loadScript('http://trendyradio.heroku.com/locations/23424975/trends.jsonp?callback={callback}', {
-		onLoad: function(result) {
-			nile.renderTrends(result);
-		},
-		useCache: true
-	}
+	glow.net.loadScript('http://trendyradio.heroku.com/locations/23424975/trends.jsonp?callback={callback}', 
+		{
+			onLoad: function(result) {
+				nile.renderTrends(result);
+			},
+			useCache: true
+		}
 	);
 };
+
 nile.loadTrends();
 
