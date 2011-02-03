@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="/js/glow/1.7.3/core/core.js" type="text/javascript"></script>
+  <script src="/js/glow/1.7.3/widgets/widgets.js" type="text/javascript"></script>
+  <script src="/js/trendyradio.js"></script>
+  <link href="/js/glow/1.7.3/widgets/widgets.css" type="text/css" rel="stylesheet" />
+  
   <!-- Framework CSS -->
   <link rel="stylesheet" href="/css/blueprint/screen.css" type="text/css" media="screen, projection">
   <link rel="stylesheet" href="/css/blueprint/print.css" type="text/css" media="print">
@@ -8,17 +13,41 @@
   
   <style type="text/css">
     body { 
-      margin-top: 1em;
+      background: #9D51A6 url('/background.jpg');
+    }
+    #content { 
+      background: #fff;
+      padding: 1em;
     }
     blockquote { font-size: 1.3em; }
     h1 { font-size: 5em; }
+    #about h2 { margin-bottom: 0.2em; }
+    #about ul { list-style: none; padding-left: 0px; }
+    
+    ol li {
+      margin:4px;
+      height: 200px;
+    }
   </style>
+  
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-21165592-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
 </head>
 <body>
-  <div class="container showgrid">
-    <div class="span-5">
+  <div id="content" class="container">
+    <div id="about" class="span-5">
+      <img src="/logo.png" width="190" height="246" />
       <h1>Trendy Radio</h1>
-      <p><blockquote>Showcasing the best of BBC Radio content based on what's happening in the world</blockquote></p>
+      <blockquote>Showcasing the best of BBC Radio based on what's happening in the world</blockquote>
       
       <h2>Using</h2>
       <ul>
@@ -27,7 +56,9 @@
       </ul>
       
       <h2>About</h2>
-      <p>Made at the <a href="http://www.bbc.co.uk/radio/">BBC Radio &amp; Music</a> Hack Day by:</p>
+      <p>Made at the <a href="http://www.bbc.co.uk/radio/">BBC Radio &amp; Music</a> Hack Day.</p>
+      
+      <h2>Credits</h2>
       <ul>
         <li><a href="http://twitter.com/jcleveley">@jcleveley</a></li>
         <li><a href="http://twitter.com/metade">@metade</a></li>
@@ -43,8 +74,8 @@
         </audio>
       </p>
     </div>
-    <div class="span-19">
-      
+    <div id="trends" class="right span-18">
+ 		
     </div>
   </div>
 </body>
