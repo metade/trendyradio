@@ -12,6 +12,7 @@ nile.renderTrends = function(results) {
 			template = '';
 			if (results[i].content.news && results[i].content.news.length) {
 				template += '<h2>' + results[i].title + '</h2>';
+				template += '<p>' + results[i].description + '</p>';
 				template += '<ol id="trend'+ i +'">';
 				
 				for (var typeIndex = 0; typeIndex < this.types.length; typeIndex++){
@@ -33,7 +34,7 @@ nile.renderTrends = function(results) {
 						}	
 				}	
 				
-				template += '</ol>';						
+				template += '</ol><hr />';						
 				glow.dom.create(template).appendTo('#trends');
 				var carousel = new glow.widgets.Carousel("#trend" + i,{
 					step: 3
