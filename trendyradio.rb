@@ -60,7 +60,8 @@ def scrape_search(url, content)
       section = (a.parent.parent/"//span[@class='newsSection']").first
       section = section.inner_html.sub(/ \/ $/, '') if section
       
-      image = (a.parent.parent/"//img").first['src']
+      image = (a.parent.parent/"//img").first
+      image = image['src'] if image
       
       content[type] ||= []
       content[type] << {
