@@ -4,6 +4,7 @@ require 'hpricot'
 require 'open-uri'
 require 'json'
 require 'erb'
+require 'base64'
 
 require 'active_support/cache'
 require 'active_support/cache/dalli_store'
@@ -76,8 +77,9 @@ def scrape_search(url, content)
 end
 
 def find_content(query)
+  key = Base64.b64encode(query).strip
   content = {}
-  CACHE.fetch(query, :expires_in => 1.hour) do
+  CACHE.fetch(key, :expires_in => 1.hour) do
     query_string = URI.escape(%["#{query}"])
     scrape_search(%[http://www.bbc.co.uk/search/?q=#{query_string}], content)
     scrape_search(%[http://www.bbc.co.uk/search/iplayer/?q=#{query_string}], content)
