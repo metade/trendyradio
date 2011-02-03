@@ -148,19 +148,28 @@
         <li>stella</li>
       </ul>
       
-      <audio id="deployment_bomb" preload="auto">
-        Obligatory Westwood-style bomb
-        <source src="http://www.bbc.co.uk/radio1/developers/soundboard/assets/deployment_bomb.mp3" />
-      </audio>
-      <p><small><a href="javascript:play_single_sound();">Obligatory Westwood-style bomb</a></small></p>
-      <script type="text/javascript">
-        function play_single_sound() {
-          document.getElementById('deployment_bomb').play();
-        }
-      </script>
+      <h2>API</h2>
+      <ul>
+        <li><a href="http://trendyradio.heroku.com/locations/23424975/trends.json">JSON</a></li>
+        <li><a href="http://trendyradio.heroku.com/locations/23424975/trends.jsonp?callback=foo">JSONP</a></li>
+      <ul>
+      
+      <hr class="space" />
+      <div class="bottom">
+        <audio id="deployment_bomb" preload="auto">
+          Obligatory Westwood-style bomb
+          <source src="http://www.bbc.co.uk/radio1/developers/soundboard/assets/deployment_bomb.mp3" />
+        </audio>
+        <p><small><a href="javascript:play_single_sound();">Obligatory Westwood-style bomb</a></small></p>
+        <script type="text/javascript">
+          function play_single_sound() {
+            document.getElementById('deployment_bomb').play();
+          }
+        </script>
+      </div>
     </div>
     <div id="trends" class="right span-18">
- 		<span id="spinner">LOADING TRENDS . . .</span>
+      <span id="spinner">LOADING TRENDS . . .</span>
     </div>
   </div>
 </body>
