@@ -50,6 +50,7 @@ def aggregate_content(woeid)
   data['trends'].map do |trend|
     description = trend['description']['text'] if trend['description']
     { :title => trend['name'],
+      :category => trend['category_name'],
       :description => description,
       :first_trended_at => trend['first_trended_at'],
       :last_trended_at => trend['last_trended_at'],
