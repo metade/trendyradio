@@ -6,10 +6,14 @@ require 'json'
 require 'erb'
 
 require 'active_support/cache'
-require 'active_support/cache/dalli_store23'
+require 'active_support/cache/dalli_store'
 
 configure do
-  CACHE = ActiveSupport::Cache::MemoryStore.new
+  if ENV['cache'] == 'dalli'
+    CACHE = ActiveSupport::Cache::DalliStore.new
+  else
+    CACHE = ActiveSupport::Cache::MemoryStore.new
+  end
 end
 
 # FRONT END STUFF
