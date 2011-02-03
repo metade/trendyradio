@@ -30,7 +30,7 @@ end
 
 get '/locations/:woeid/trends.jsonp' do |woeid|
   content_type 'application/json'
-  response.headers['Cache-Control'] = 'public, max-age=60'
+  response.headers['Cache-Control'] = 'public, max-age=120'
   
   callback = params[:callback] || 'callback'
   "#{callback}(#{aggregate_content(woeid).to_json});"
@@ -38,7 +38,7 @@ end
 
 get '/locations/:woeid/trends.json' do |woeid|
   content_type 'application/json'
-  response.headers['Cache-Control'] = 'public, max-age=60'
+  response.headers['Cache-Control'] = 'public, max-age=120'
   
   aggregate_content(woeid).to_json
 end
@@ -61,7 +61,7 @@ end
 
 def trends(woeid = 23424975)
   url = "http://api.whatthetrend.com/api/v2/trends.json?woeid=#{woeid}"
-  CACHE.fetch(url, :expires_in => 1.minutes) do
+  CACHE.fetch(url, :expires_in => 2.minutes) do
     puts "FETCHING #{url}"
     begin
       JSON.parse(open(url).read)

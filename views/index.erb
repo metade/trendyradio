@@ -24,12 +24,12 @@
     #about h2 { margin-bottom: 0.2em; }
     #about ul { list-style: none; padding-left: 0px; }
     
+    h2 { margin-bottom: 0.2em; }
     ol li {
       margin:4px;
       height: 200px;
     }
   </style>
-  
   
   <script type="text/javascript">
     var _gaq = _gaq || [];
@@ -67,15 +67,18 @@
         <li>stella</li>
       </ul>
       
-      <p>
-        <audio preload="auto" autobuffer autoplay>
-          Obligatory Westwood-style bomb
-          <source src="http://www.bbc.co.uk/radio1/developers/soundboard/assets/deployment_bomb.mp3" />
-        </audio>
-      </p>
+      <audio id="deployment_bomb" preload="auto">
+        Obligatory Westwood-style bomb
+        <source src="http://www.bbc.co.uk/radio1/developers/soundboard/assets/deployment_bomb.mp3" />
+      </audio>
+      <p><small><a href="javascript:play_single_sound();">Obligatory Westwood-style bomb</a></small></p>
+      <script type="text/javascript">
+        function play_single_sound() {
+          document.getElementById('deployment_bomb').play();
+        }
+      </script>
     </div>
     <div id="trends" class="right span-18">
- 		
     </div>
   </div>
 </body>
