@@ -71,7 +71,11 @@ def term_extraction(description)
     puts "FETCHING #{url}"
     begin
       data = JSON.parse(open(url).read)
-      data['query']['results']['Result']
+      if (data['query'] and data['query']['results'] and data['query']['results']['Result'])
+        data['query']['results']['Result'] 
+      else
+        []
+      end
     rescue JSON::ParserError
       return []
     end
