@@ -4,7 +4,7 @@ require 'hpricot'
 require 'open-uri'
 require 'json'
 require 'erb'
-require 'base64'
+require 'digest/md5'
 
 require 'active_support/cache'
 require 'active_support/cache/dalli_store'
@@ -65,8 +65,8 @@ def aggregate_content(woeid)
 end
 
 def term_extraction(description)
-  url = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20search.termextract%20where%20context%3D%22#{URI.escape(description)}%22&format=json&callback"
-  key = Base64.b64encode(url).strip
+  url = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20search.termextract%20where%20context%3D%22#{URI.escape(description)}%22&format=json"
+  key = Digest::MD5.hexdigest(url)
   CACHE.fetch(key, :expires_in => 1.hour) do
     puts "FETCHING #{url}"
     begin
@@ -124,7 +124,7 @@ def scrape_search(url, content)
 end
 
 def find_content(query)
-  key = Base64.b64encode(query).strip
+  key = Digest::MD5.hexdigest(query)
   content = {}
   CACHE.fetch(key, :expires_in => 1.hour) do
     query_string = URI.escape(%["#{query}"])
