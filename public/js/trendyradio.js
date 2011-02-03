@@ -3,10 +3,10 @@ nile = {};
 
 nile.types = ['radio', 'tv', 'news', 'sport'];
 
-nile.loadTrends = function(results) {
+nile.renderTrends = function(results) {
 	
 	var template;
-	
+	glow.dom.get('#spinner').remove();
 	if(results) {
 		for (var i = 0; i < results.length; i++) {
 			template = '';
@@ -45,10 +45,15 @@ nile.loadTrends = function(results) {
 
 };
 
-glow.net.loadScript('/locations/23424975/trends.jsonp?callback={callback}', {
-	onLoad: function(result) {
-		nile.loadTrends(result);
-	},
-	useCache: true
-}
-);
+nile.loadTrends = function(){
+
+	glow.net.loadScript('http://trendyradio.heroku.com/locations/23424975/trends.jsonp?callback={callback}', {
+		onLoad: function(result) {
+			nile.renderTrends(result);
+		},
+		useCache: true
+	}
+	);
+};
+nile.loadTrends();
+

@@ -37,7 +37,6 @@
 	    margin: 4px;
 	    padding: 10px;
 	    position: relative;
-	    width: 120px;
 		text-decoration: none;
 	}
 	#trends ol li a span.title {
@@ -90,7 +89,14 @@
 	}
 
 
-
+	#trends #spinner {
+	    background: url("/spinner.gif") no-repeat scroll 0 0 transparent;
+	    display: block;
+	    height: 61px;
+	    left: 300x;
+		padding-left: 60px;
+		padding-top: 10px;
+	}
 
 
   </style>
@@ -143,6 +149,7 @@
       </script>
     </div>
     <div id="trends" class="right span-18">
+ 		<span id="spinner">LOADING TRENDS . . .</span>
     </div>
   </div>
 </body>
