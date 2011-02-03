@@ -9,6 +9,11 @@ require 'base64'
 require 'active_support/cache'
 require 'active_support/cache/dalli_store'
 
+RADIO_NETWORKS = [
+  'BBC Asian Network',
+  'BBC World Service',
+]
+
 configure do
   if ENV['cache'] == 'dalli'
     CACHE = ActiveSupport::Cache::DalliStore.new
@@ -71,18 +76,24 @@ def scrape_search(url, content)
   if text
     doc = Hpricot(text)
     (doc/"//div[@class='subSection']/ul/li/div/a").map do |a|
+      url = a['href']
       type = a.parent.parent.parent.parent['id'].sub('-content', '')
       next if type == 'around_bbc'
       
       section = (a.parent.parent/"//span[@class='newsSection']").first
       section = section.inner_html.sub(/ \/ $/, '') if section
       
+      if type == 'iplayer'
+        type = (section.downcase =~ /radio/ or RADIO_NETWORKS.include?(section)) ? 'radio' : 'tv'
+        url = "http://www.bbc.co.uk/programmes/#{$1}" if url =~ %r[http://www.bbc.co.uk/iplayer/episode/(\w+)]
+      end
+      
       image = (a.parent.parent/"//img").first
       image = image['src'] if image
       
       content[type] ||= []
       content[type] << {
-        :url => a['href'],
+        :url => url,
         :type => type,
         :image => image,
         :title => a.inner_html,
