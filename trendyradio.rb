@@ -45,7 +45,11 @@ def trends(woeid = 23424975)
   url = "http://api.whatthetrend.com/api/v2/trends.json?woeid=#{woeid}"
   CACHE.fetch(url, :expires_in => 1.minutes) do
     puts "FETCHING #{url}"
-    JSON.parse(open(url).read)
+    begin
+      JSON.parse(open(url).read)
+    rescue JSON::ParserError
+      return []
+    end
   end
 end
 
