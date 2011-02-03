@@ -66,7 +66,7 @@ end
 
 def term_extraction(description)
   url = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20search.termextract%20where%20context%3D%22#{URI.escape(description)}%22&format=json&callback"
-  key = Base64.b64encode(query).strip
+  key = Base64.b64encode(url).strip
   CACHE.fetch(key, :expires_in => 1.hour) do
     puts "FETCHING #{url}"
     begin
