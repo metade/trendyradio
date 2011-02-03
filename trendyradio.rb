@@ -49,13 +49,31 @@ def aggregate_content(woeid)
   data = trends(woeid)
   data['trends'].map do |trend|
     description = trend['description']['text'] if trend['description']
+    content = find_content(trend['name'])
+    if (content.empty? and description)
+      terms = term_extraction(description)
+      content = find_content(terms.first) if terms.any?
+    end
     { :title => trend['name'],
       :category => trend['category_name'],
       :description => description,
       :first_trended_at => trend['first_trended_at'],
       :last_trended_at => trend['last_trended_at'],
-      :content => find_content(trend['name'])
+      :content => content
     }
+  end
+end
+
+def term_extraction(description)
+  url = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20search.termextract%20where%20context%3D%22#{URI.escape(description)}%22&format=json&callback"
+  CACHE.fetch(url, :expires_in => 1.hour) do
+    puts "FETCHING #{url}"
+    begin
+      data = JSON.parse(open(url).read)
+      data['query']['results']['Result']
+    rescue JSON::ParserError
+      return []
+    end
   end
 end
 
