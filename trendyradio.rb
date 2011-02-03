@@ -23,10 +23,24 @@ get '/' do
   erb :index
 end
 
+get '/locations/:woeid/trends.jsonp' do |woeid|
+  content_type 'application/json'
+  response.headers['Cache-Control'] = 'public, max-age=60'
+  
+  callback = params[:callback] || 'callback'
+  "#{callback}(#{aggregate_content(woeid).to_json});"
+end
+
 get '/locations/:woeid/trends.json' do |woeid|
   content_type 'application/json'
   response.headers['Cache-Control'] = 'public, max-age=60'
   
+  aggregate_content(woeid).to_json
+end
+
+# BACK END STUFF
+
+def aggregate_content(woeid)
   data = trends(woeid)
   data['trends'].map do |trend|
     description = trend['description']['text'] if trend['description']
@@ -36,10 +50,8 @@ get '/locations/:woeid/trends.json' do |woeid|
       :last_trended_at => trend['last_trended_at'],
       :content => find_content(trend['name'])
     }
-  end.to_json
+  end
 end
-
-# BACK END STUFF
 
 def trends(woeid = 23424975)
   url = "http://api.whatthetrend.com/api/v2/trends.json?woeid=#{woeid}"
