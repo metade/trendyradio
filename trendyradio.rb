@@ -78,6 +78,8 @@ def term_extraction(description)
       end
     rescue JSON::ParserError
       return []
+    rescue OpenURI::HTTPError
+      return []
     end
   end
 end

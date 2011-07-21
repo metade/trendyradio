@@ -47,7 +47,7 @@ nile.renderTrends = function(results) {
 
 nile.loadTrends = function(){
 
-	glow.net.loadScript('http://trendyradio.heroku.com/locations/23424975/trends.jsonp?callback={callback}', 
+	glow.net.loadScript('/locations/23424975/trends.jsonp?callback={callback}', 
 		{
 			onLoad: function(result) {
 				nile.renderTrends(result);
