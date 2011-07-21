@@ -47,7 +47,7 @@ end
 
 def aggregate_content(woeid)
   data = trends(woeid)
-  data['trends'].map do |trend|
+  data['trends'].uniq.map do |trend|
     description = trend['description']['text'] if trend['description']
     content = find_content(trend['name'])
     if (content.empty? and description)
