@@ -8,5 +8,7 @@ gem 'activesupport'
 gem 'i18n'
 gem 'dalli'
 
-gem 'sqlite3'
-gem 'sqlitecache', '~> 0.0.1'
+group :development do
+  gem 'sqlite3'
+  gem 'sqlitecache', '~> 0.0.1'
+end
