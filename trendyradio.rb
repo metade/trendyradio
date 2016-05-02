@@ -29,9 +29,9 @@ get '/' do
 end
 
 get '/locations/:woeid/trends.jsonp' do |woeid|
-  content_type 'application/json'
+  content_type 'application/javascript'
   response.headers['Cache-Control'] = 'public, max-age=120'
-  
+
   callback = params[:callback] || 'callback'
   "#{callback}(#{aggregate_content(woeid).to_json});"
 end
@@ -39,7 +39,7 @@ end
 get '/locations/:woeid/trends.json' do |woeid|
   content_type 'application/json'
   response.headers['Cache-Control'] = 'public, max-age=120'
-  
+
   aggregate_content(woeid).to_json
 end
 
@@ -72,7 +72,7 @@ def term_extraction(description)
     begin
       data = JSON.parse(open(url).read)
       if (data['query'] and data['query']['results'] and data['query']['results']['Result'])
-        data['query']['results']['Result'] 
+        data['query']['results']['Result']
       else
         []
       end
@@ -105,18 +105,18 @@ def scrape_search(url, content)
       url = a['href']
       type = a.parent.parent.parent.parent['id'].sub('-content', '')
       next if type == 'around_bbc'
-      
+
       section = (a.parent.parent/"//span[@class='newsSection']").first
       section = section.inner_html.sub(/ \/ $/, '') if section
-      
+
       if type == 'iplayer'
         type = (section.downcase =~ /radio/ or RADIO_NETWORKS.include?(section)) ? 'radio' : 'tv'
         url = "http://www.bbc.co.uk/programmes/#{$1}" if url =~ %r[http://www.bbc.co.uk/iplayer/episode/(\w+)]
       end
-      
+
       image = (a.parent.parent/"//img").first
       image = image['src'] if image
-      
+
       content[type] ||= []
       content[type] << {
         :url => url,
